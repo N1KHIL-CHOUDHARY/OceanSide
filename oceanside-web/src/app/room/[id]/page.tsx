@@ -56,7 +56,7 @@ export default function RoomPage() {
     
     socket = new WebSocket(wsUrl);
 
-    console.log(wsUrl);
+    
     
   
       socket.onopen = () => {
