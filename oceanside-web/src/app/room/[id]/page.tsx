@@ -2,8 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
-import { env } from "process";
-require('dotenv').config();
+
 
 type SignalMessage =
   | { type: "offer"; offer: RTCSessionDescriptionInit }
