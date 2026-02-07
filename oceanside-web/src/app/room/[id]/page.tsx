@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
+import { env } from "process";
+require('dotenv').config();
 
 type SignalMessage =
   | { type: "offer"; offer: RTCSessionDescriptionInit }
@@ -43,8 +45,20 @@ export default function RoomPage() {
         remoteVideoRef.current!.srcObject = e.streams[0];
       };
   
-      // 3️⃣ WebSocket
-      socket = new WebSocket("ws://localhost:8080");
+      const wsUrl =
+      process.env.NEXT_PUBLIC_BACKEND_WS ??
+      (process.env.NODE_ENV === "development"
+        ? "ws://localhost:8080"
+        : undefined);
+    
+    if (!wsUrl) {
+      throw new Error("WebSocket URL is not defined");
+    }
+    
+    socket = new WebSocket(wsUrl);
+
+    console.log(wsUrl);
+    
   
       socket.onopen = () => {
         socket.send(JSON.stringify({ type: "join", roomId }));
